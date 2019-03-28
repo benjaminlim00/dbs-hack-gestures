@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "713976608577",
+    "firebase_url": "https://dbsgestures.firebaseio.com",
+    "project_id": "dbsgestures",
+    "storage_bucket": "dbsgestures.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713976608577:android:8b1b3e3cc2e50b18",
+        "android_client_info": {
+          "package_name": "com.example.benjamin.dbsgestures"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713976608577-mt4f7041l34csma7pg0cl64et2tp2rc0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJQhPul46VLM00CeNkhbjLAPuHSEo3iX0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
