@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -35,6 +36,8 @@ public class VerifyGesture extends AppCompatActivity {
     GestureLibrary lib;
     String strData;
     String trainingData;
+    int failcount = 3;
+    ArrayList<String> dataSubmit = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +64,10 @@ public class VerifyGesture extends AppCompatActivity {
 
 
                 strData = pressure + "," + "(" + x + "," + y + ")";
-                trainingData = strData;
+
+
+                dataSubmit.add(strData);
+//                Log.d("tag", "data: " + dataSubmit);
 
                 return true;
             }
@@ -75,32 +81,48 @@ public class VerifyGesture extends AppCompatActivity {
                 ArrayList<Prediction> predictionArrayList = lib.recognize(gesture);
                 for (Prediction prediction : predictionArrayList) {
                     if (prediction.score > 1.2) {
-                        //overwrite one row of data
-                        mRootDatabaseRef.child(CHILD_NODE_PART1).setValue(strData);
+                        //overwrite one row of data, first we have to clear the old data
+                        mRootDatabaseRef.child(CHILD_NODE_PART1).setValue("cleared");
+                        for (int i=0;i<dataSubmit.size();i++) {
+                            Log.d("tag", dataSubmit.get(i));
+                            mRootDatabaseRef.child(CHILD_NODE_PART1).child(Integer.toString(i)).setValue(dataSubmit.get(i));
+                        }
 
-                        //append to list of data
+                        //append to list of data for training
                         String uniqueID = UUID.randomUUID().toString();
-                        mRootDatabaseRef.child(CHILD_NODE_TRAINING).child(uniqueID).setValue(trainingData);
 
-
+                        for (int i=0;i<dataSubmit.size();i++) {
+                            mRootDatabaseRef.child(CHILD_NODE_TRAINING).child(uniqueID).child(Integer.toString(i)).setValue(dataSubmit.get(i));
+                        }
 
                         Toast.makeText(VerifyGesture.this, "Successfully verified!", Toast.LENGTH_LONG).show();
+                        dataSubmit.clear(); //clear the data. BUG FIX
 
 
-                        //quit and return to telegram
+                        Intent i = new Intent(VerifyGesture.this, VerifiedDone.class);
+                        startActivity(i);
+
                         //now we countdown 3 sec and app destroy
 
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                moveTaskToBack(true);
-                                finish();   //this should close everything
-                            }
-                        }, 2000);
+
 
 
                     } else {
-                        Toast.makeText(VerifyGesture.this, "Failed, please try again!", Toast.LENGTH_LONG).show();
+                        dataSubmit.clear();
+                        if (failcount == 1) {
+                            Toast.makeText(VerifyGesture.this, "Failed, please try again!" + "\n( " + failcount + " try left )", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(VerifyGesture.this, "Failed, please try again!" + "\n( " + failcount + " tries left )", Toast.LENGTH_LONG).show();
+                        }
+
+                        failcount -= 1;
+
+                        if (failcount == -1) {
+                            Toast.makeText(VerifyGesture.this, "Exceeded number of tries", Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(VerifyGesture.this, VerifiedFail.class);
+                            startActivity(i);
+                        }
+
                     }
                 }
             }
@@ -109,6 +131,9 @@ public class VerifyGesture extends AppCompatActivity {
         Intent appLinkIntent = getIntent();
         String appLinkAction = appLinkIntent.getAction();
         Uri appLinkData = appLinkIntent.getData();
+
+
+
     }
 
 

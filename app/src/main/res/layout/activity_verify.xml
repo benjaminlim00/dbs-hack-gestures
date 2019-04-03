@@ -14,8 +14,8 @@
 
     <ImageView
         android:id="@+id/verifytext"
-        android:layout_width="221dp"
-        android:layout_height="55dp"
+        android:layout_width="245dp"
+        android:layout_height="22dp"
         android:layout_below="@+id/verifyheader"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="22dp"

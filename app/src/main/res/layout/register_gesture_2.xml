@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_alignParentBottom="true"
     tools:context=".RegisterGesture">
-    
+
     <com.example.benjamin.dbsgestures.CanvasView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,12 +24,12 @@
 
     <ImageView
         android:id="@+id/reggesturetext"
-        android:layout_width="245dp"
+        android:layout_width="280dp"
         android:layout_height="20dp"
         android:layout_below="@+id/reggestureheader"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="22dp"
-        android:background="@drawable/reggesturetext" />
+        android:background="@drawable/reggesturetext2" />
 
 
 
@@ -61,7 +61,7 @@
             android:layout_margin="10dp"
 
 
-        />
+            />
 
         <Button
             android:id="@+id/clearButton"
@@ -76,7 +76,7 @@
             android:layout_alignParentTop="false"
             android:layout_height="45dp"
             android:layout_margin="10dp"
-        />
+            />
 
 
     </LinearLayout>
